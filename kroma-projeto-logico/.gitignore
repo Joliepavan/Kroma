@@ -1,0 +1,25 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Arquivos temporários e de backup
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# IDEs e editores
+.vscode/
+.idea/
+*.code-workspace
+
+# Artefatos de build e dependências
+node_modules/
+dist/
+build/
