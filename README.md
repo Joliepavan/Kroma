@@ -7,6 +7,11 @@
 
 O **Kroma** é uma solução voltada para a camada de dados em Biotecnologia Aplicada. O sistema atua na persistência, auditoria e observabilidade de cultivos biológicos, permitindo o registro de séries temporais de sensores, a gestão de lotes e a emissão de alertas de anomalias.
 
+## 🖥️ Protótipo do Sistema
+Protótipo navegável das principais telas e funcionalidades do sistema Kroma.
+
+🔗 **[Visualizar Protótipo do Kroma](https://lovable.dev/preview/c0NlwwYJbqq4Y6PMCTBw1lT6I3PjqX25)**
+
 ## 👥 Integrantes do Grupo
 
 - Ana Beatriz Vaz de Souza
