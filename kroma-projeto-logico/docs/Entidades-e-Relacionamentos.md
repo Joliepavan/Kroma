@@ -20,7 +20,8 @@
 | `especificacoes_tecnicas`| Texto | Nenhuma |
 
 **Entidade: Tipo_Parametro**
-| `id_sensor` | Inteiro | **PK** |
+| `id_tipo` | Inteiro | **PK** |
+| `id_sensor` | Inteiro | **FK** (Refere a Sensor) |
 | `tipo` | Texto (pH, Temp, OD, Vazão, Umidade, Pressao, Velocidade) | Nenhuma |
 | `tipo` | Unidade | Nenhuma |
 
