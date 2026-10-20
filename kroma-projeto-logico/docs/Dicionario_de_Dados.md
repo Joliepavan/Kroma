@@ -1,87 +1,106 @@
-**Dicionário de Dados - Sistema Kroma**
+# Dicionário de Dados — Sistema Kroma
 
-**Entidade: Biorreator**
-* **Métodos:** Cadastrar biorreator, consultar histórico.
+Este dicionário registra as tabelas, atributos, tipos e chaves da mudança do
+modelo lógico relacional descrita para o projeto. Os nomes foram padronizados
+com letras minúsculas e `_`; `Parametro+Leituras` foi escrito como
+`parametro_leituras`, pois `+` não é apropriado para um nome relacional sem
+delimitação especial.
 
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+**Legenda:** PK = chave primária; FK = chave estrangeira; UNIQUE = valor único.
+Tipos e restrições não especificados na descrição do modelo são indicados como
+“não informado”, sem inferir regras adicionais.
+
+## Tabelas
+
+### Biorreator
+
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Biorreator` | Inteiro | **PK** (Chave Primária) |
-| `Nome_Tag` | Texto (ex: BR-01) | NOT NULL |
-| `Volume` | Decimal | > 0 |
-| `Agitacao` | Texto | Nenhuma |
-| `Material` | Texto | Nenhuma |
-| `Status` | Texto | Operação, Manutenção, Pausado |
+| `id_biorreator` | Inteiro | **PK** |
+| `modelo` | Texto | — |
+| `capacidade` | Inteiro | — |
+| `material` | Texto | — |
 
+### Sensor
 
-**Entidade: Sensor**
-* **Métodos:** Cadastrar sensor, consultar informações.
-
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Sensor` | Inteiro | **PK** |
-| `ID_Biorreator` | Inteiro | **FK** (Refere a `Biorreator.ID_Biorreator`) |
-| `Tipo` | Texto | pH, Temp, OD, Vazão |
-| `Precisao` | Decimal | Nenhuma |
-| `Data_Ultima_Calibracao`| Data | Nenhuma |
-| `Especificacoes_Tecnicas`| Texto | Nenhuma |
+| `id_sensor` | Inteiro | **PK** |
+| `resolucao` | Inteiro | — |
+| `modelo` | Texto | — |
+| `data_ultima_calibracao` | Data e hora | — |
+| `id_biorreator` | Inteiro | **FK** → `Biorreator.id_biorreator` |
+| `data_hora` | Data e hora | — |
 
+### Parametro_Leituras
 
-**Entidade: Leitura**
-* **Métodos:** Registrar medição contínua no banco, exibir histórico.
-
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Leitura` | Inteiro (Auto-incremento) | **PK** |
-| `ID_Sensor` | Inteiro | **FK** (Refere a `Sensor.ID_Sensor`) |
-| `Valor_Medido` | Decimal | NOT NULL |
-| `Data_Hora` | Data e Hora | NOT NULL |
+| `unidade_grandeza` | Texto | — |
+| `parametro_medido` | Decimal | **Parte da PK composta**, conforme indicado no modelo |
+| `id_sensor` | Inteiro | **Parte da PK composta** e **FK** → `Sensor.id_sensor` |
+| `valor_medido` | Decimal | — |
+| `id_leitura` | Inteiro | Chave não indicada na descrição |
 
+### Fabrica
 
-**Entidade: Lote / Experimento**
-* **Métodos:** Iniciar lote, finalizar lote, gerar relatórios de rastreabilidade.
+Tabela associativa entre `Biorreator` e `Lote`.
 
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `Numero_Lote` | Inteiro | **PK** |
-| `ID_Biorreator` | Inteiro | **FK** (Refere a `Biorreator.ID_Biorreator`) |
-| `ID_Operador` | Inteiro | **FK** (Refere a `Operador.ID_Operador`) |
-| `Linhagem_Cepa` | Texto | NOT NULL |
-| `Meio_Cultura` | Texto | NOT NULL |
-| `Data_Hora_Inicio` | Data e Hora | NOT NULL |
-| `Data_Hora_Termino` | Data e Hora | Pode ser nulo (se em andamento) |
-| `Status` | Texto | Em andamento, Concluído, Pausado |
+| `id_biorreator` | Inteiro | **Parte da PK composta** e **FK** → `Biorreator.id_biorreator` |
+| `id_lote` | Inteiro | **Parte da PK composta** e **FK** → `Lote.id_lote` |
+| `data_hora_inicio` | Data e hora | — |
+| `data_hora_fim` | Data e hora | — |
 
+### Lote
 
-**Entidade: Parametro_Seguranca**
-* **Métodos:** Definir faixas ideais por lote, salvar parâmetros.
-
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Parametro` | Inteiro | **PK** |
-| `Numero_Lote` | Inteiro | **FK** (Refere a `Lote.Numero_Lote`) |
-| `Tipo_Variavel` | Texto | pH, Temperatura |
-| `Valor_Minimo_Toleravel`| Decimal | NOT NULL |
-| `Valor_Maximo_Toleravel`| Decimal | NOT NULL |
+| `id_lote` | Inteiro | **PK** |
+| `cepa` | Texto | **UNIQUE** |
 
+### Operador
 
-**Entidade: Alerta e Discrepância**
-* **Métodos:** Gravar discrepância, disparar notificação de anomalia.
-
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Alerta` | Inteiro | **PK** |
-| `Numero_Lote` | Inteiro | **FK** (Refere a `Lote.Numero_Lote`) |
-| `ID_Operador_Responsavel`| Inteiro | **FK** (Refere a `Operador.ID_Operador`) |
-| `Descricao_Evento` | Texto | NOT NULL |
-| `Data_Hora_Ocorrencia` | Data e Hora | NOT NULL |
-| `Observacoes` | Texto longo | Pode ser nulo |
+| `id_operador` | Inteiro | **PK** |
+| `nome` | Texto | — |
+| `formacao` | Texto | — |
 
+### E_Conduzido
 
-**Entidade: Operador**
-* **Métodos:** Logar no sistema, assinar responsabilidade por um lote.
+Tabela associativa entre `Operador` e `Lote`.
 
-| Nome Atributo | Tipo / Descrição | Relações / Restrições |
+| Atributo | Tipo | Relação / restrição |
 | :--- | :--- | :--- |
-| `ID_Operador` | Inteiro | **PK** |
-| `Nome` | Texto | NOT NULL |
-| `Registro_Profissional` | Texto | UNIQUE |
+| `id_operador` | Inteiro | **Parte da PK composta** e **FK** → `Operador.id_operador` |
+| `id_lote` | Inteiro | **Parte da PK composta** e **FK** → `Lote.id_lote` |
+
+## Relacionamentos e cardinalidades
+
+| Relacionamento | Cardinalidade descrita |
+| :--- | :--- |
+| `Biorreator` — `Sensor` | Um biorreator pode ter vários sensores; cada sensor pertence a exatamente um biorreator. |
+| `Sensor` — `Parametro_Leituras` | A descrição indica duas linhas de relacionamento, ambas com (1,1) no lado de `Sensor` e (1,n) no lado de `Parametro_Leituras`. |
+| `Biorreator` — `Fabrica` — `Lote` | N:N, resolvido por `Fabrica`; cada entidade pode participar de zero a muitos registros associativos, conforme as cardinalidades fornecidas. |
+| `Lote` — `Cepa` | A descrição informa uma ligação direta e cardinalidade (1,n) no lado de `Cepa`, mas não define uma tabela `Cepa` nem as chaves necessárias para implementá-la. |
+| `Lote` — `E_Conduzido` — `Operador` | N:N, resolvido por `E_Conduzido`; a descrição informa cardinalidade (1,n) para ambos os lados. |
+
+## Pontos do modelo que precisam de confirmação
+
+- `id_sensor` aparece duas vezes visualmente em `Parametro+Leituras`. Foi
+  registrado uma única vez, pois uma tabela relacional não pode ter duas
+  colunas com o mesmo nome. A descrição não permite saber se as duas linhas
+  representam relacionamentos diferentes que exigiriam FKs distintas.
+- `id_leitura` não foi marcado como chave na descrição fornecida. Por isso,
+  este dicionário não o declara PK; a chave primária de
+  `Parametro_Leituras` foi registrada conforme os atributos indicados como
+  chave (`parametro_medido` e `id_sensor`).
+- O texto da entidade `Lote` contém `cepacepa`; foi normalizado para o atributo
+  `cepa`, marcado como único conforme a descrição. Como também é citado um
+  relacionamento com uma possível tabela `Cepa`, é necessário confirmar se
+  `cepa` é somente atributo de `Lote` ou uma entidade separada. Se for tabela,
+  sua PK e a FK correspondente em `Lote` ainda precisam ser definidas.
+- `data_hora` foi mantido em `Sensor`, onde aparece na lista de atributos
+  fornecida. Sua finalidade não foi especificada.
