@@ -10,7 +10,7 @@ O **Kroma** é uma solução voltada para a camada de dados em Biotecnologia Apl
 ## 🖥️ Protótipo do Sistema
 Protótipo navegável das principais telas e funcionalidades do sistema Kroma.
 
-🔗 **[Visualizar Protótipo do Kroma](https://lovable.dev/preview/c0NlwwYJbqq4Y6PMCTBw1lT6I3PjqX25)**
+🔗 **[Visualizar Protótipo do Kroma]([https://lovable.dev/preview/c0NlwwYJbqq4Y6PMCTBw1lT6I3PjqX25](https://lovable.dev/preview/wTe6awSCbQ7gh34KPSp7EuTH2IgfA9HF))**
 
 ## 👥 Integrantes do Grupo
 
