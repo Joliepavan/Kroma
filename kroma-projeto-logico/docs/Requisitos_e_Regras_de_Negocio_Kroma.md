@@ -1,11 +1,3 @@
-# Requisitos e Regras de Negócio — Sistema Kroma
-
-**Projeto:** Kroma — Sistema de Monitoramento e Rastreabilidade de Biorreatores  
-**Disciplina:** Banco de Dados — Engenharia de Software (UFG)  
-**Integrantes:** Ana Beatriz Vaz de Souza, Elisa Correia Visconde, Emilly Ranny Dias Silva, Jolie Lopes Pavan, Thyago Divino
-
----
-
 ## 1. Requisitos Funcionais (RF)
 
 * **RF01 — Gestão de Biorreatores:** O sistema deve permitir o cadastro, consulta e atualização de biorreatores, armazenando seu identificador único, modelo, capacidade volumétrica e material de construção.
